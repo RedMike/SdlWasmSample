@@ -21,5 +21,11 @@
         <EmccExportedRuntimeMethod Include="SDL">
             <Visible>false</Visible>
         </EmccExportedRuntimeMethod>
+        <EmccExportedRuntimeMethod Include="GL">
+            <Visible>false</Visible>
+        </EmccExportedRuntimeMethod>
+        <EmccExportedRuntimeMethod Include="setMainLoop">
+            <Visible>false</Visible>
+        </EmccExportedRuntimeMethod>
     </ItemGroup>
 </Project>

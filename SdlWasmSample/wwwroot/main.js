@@ -8,23 +8,25 @@ const { setModuleImports, getAssemblyExports, getConfig } = await dotnet
     .withApplicationArgumentsFromQuery()
     .create();
 
+//this allows us to handle the main loop from C# 
 setModuleImports('main.js', {
-    window: {
-        location: {
-            href: () => globalThis.window.location.href
-        }
-    }
+    setMainLoop: (cb) => dotnet.instance.Module.setMainLoop(cb)
 });
+
+const config = getConfig();
+const exports = await getAssemblyExports(config.mainAssemblyName);
+const shouldSetMainLoopFromJs = exports.Program.ShouldSetMainLoopFromJs;
+const cSharpMainLoop = exports.Program.MainLoop;
 
 //set canvas
 var canvas = document.getElementById("canvas");
 dotnet.instance.Module.canvas = canvas;
 await dotnet.run();
 
-const config = getConfig();
-const exports = await getAssemblyExports(config.mainAssemblyName);
-const text = exports.MyClass.Greeting();
-console.log(text);
+console.log("Initial setup of JS side");
 
-document.getElementById('out').innerHTML = text;
-await dotnet.run();
+//this allows us to set the main loop from JS
+if (shouldSetMainLoopFromJs()) {
+    console.log("Setting up main loop from JS");
+    dotnet.instance.Module.setMainLoop(cSharpMainLoop);
+}
