@@ -2,6 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SdlWasmSample", "SdlWasmSample\SdlWasmSample.csproj", "{DB1E699C-43AC-4B65-9F0C-B210865D3E7E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SDL_Native_Lib", "SDL_Native_Lib", "{9BBCB4F2-2EE0-4EF1-8BA5-16558C4FAFFE}"
+	ProjectSection(SolutionItems) = preProject
+		lib\SDL2\browser-wasm\libSDL2.a = lib\SDL2\browser-wasm\libSDL2.a
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

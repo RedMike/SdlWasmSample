@@ -8,4 +8,18 @@
         <HintPath>..\lib\SDL2-CS.dll</HintPath>
       </Reference>
     </ItemGroup>
+
+    <PropertyGroup>
+        <EmccExtraLDFlags>-sFULL_ES3</EmccExtraLDFlags>
+        <WasmEmitSymbolMap>true</WasmEmitSymbolMap>
+        <WasmAllowUndefinedSymbols>true</WasmAllowUndefinedSymbols>
+    </PropertyGroup>
+    <ItemGroup>
+        <NativeFileReference Include="..\lib\SDL2\browser-wasm\libSDL2.a">
+            <Visible>false</Visible>
+        </NativeFileReference>
+        <EmccExportedRuntimeMethod Include="SDL">
+            <Visible>false</Visible>
+        </EmccExportedRuntimeMethod>
+    </ItemGroup>
 </Project>
