@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices.JavaScript;
+using SdlWasmSample;
 
 public static partial class Program
 {
@@ -22,6 +23,7 @@ public static partial class Program
 
     private static bool _firstRun = true;
     private static DateTime _lastLog = DateTime.UnixEpoch;
+    private static SampleSdl? _sample = null;
 
     [JSExport]
     internal static void MainLoop()
@@ -30,6 +32,8 @@ public static partial class Program
         {
             Console.WriteLine("First run of the main loop");
             _firstRun = false;
+
+            _sample = new SampleSdl($"Test Window {DateTime.UtcNow:s}", 600, 400);
         }
 
         var now = DateTime.UtcNow;
@@ -37,6 +41,19 @@ public static partial class Program
         {
             _lastLog = now;
             Console.WriteLine($"Main loop still running at: {now}");
+        }
+
+        if (_sample != null)
+        {
+            if (_sample.MainLoop())
+            {
+                //sample wants to quit
+                Console.WriteLine("Sample triggered quit");
+                _sample.Dispose();
+                _sample = null;
+                SampleSdl.QuitSdl();
+                //TODO: clear main loop?
+            }
         }
     }
     
