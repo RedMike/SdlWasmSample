@@ -26,7 +26,7 @@ public static partial class Program
     private static SampleSdl? _sample = null;
 
     [JSExport]
-    internal static void MainLoop()
+    private static void MainLoop()
     {
         if (_firstRun)
         {
@@ -58,12 +58,12 @@ public static partial class Program
     }
     
     [JSExport]
-    internal static bool ShouldSetMainLoopFromJs()
+    private static bool ShouldSetMainLoopFromJs()
     {
         //if we want MainLoop to be set by JS instead of C#
         return SetMainLoopFromJs;
     }
 
     [JSImport("setMainLoop", "main.js")]
-    internal static partial void SetMainLoop([JSMarshalAs<JSType.Function>] Action cb);
+    private static partial void SetMainLoop([JSMarshalAs<JSType.Function>] Action cb);
 }
