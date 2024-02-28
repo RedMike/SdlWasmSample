@@ -16,6 +16,11 @@ setModuleImports('main.js', {
     }
 });
 
+//set canvas
+var canvas = document.getElementById("canvas");
+dotnet.instance.Module.canvas = canvas;
+await dotnet.run();
+
 const config = getConfig();
 const exports = await getAssemblyExports(config.mainAssemblyName);
 const text = exports.MyClass.Greeting();
