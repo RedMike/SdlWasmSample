@@ -3,4 +3,9 @@
         <TargetFramework>net8.0</TargetFramework>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
+    <ItemGroup>
+      <Reference Include="SDL2-CS">
+        <HintPath>..\lib\SDL2-CS.dll</HintPath>
+      </Reference>
+    </ItemGroup>
 </Project>
