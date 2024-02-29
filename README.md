@@ -18,6 +18,8 @@ If you're trying to build your project that uses a library that uses SDL interna
 (like MonoGame, FNA, etc), while SDL itself is easy to use effectively as-is,
 these other libraries are not as simple to use: see 
 [MonoGame/Library Usage of SDL](#monogamelibrary-usage-of-sdl).
+There is a `monogame-net8` branch that demonstrates this, but also involves
+forking MonoGame to apply some small changes. See the section mentioned for info.
 
 ## Basic Setup
 
@@ -211,39 +213,22 @@ What this basically does is use dynamic linking at run-time, instead of statical
 So instead of your C# binding directly listing the SDL functions and then tying it to a DLL that's included,
 it will use the OS-level functions to load that DLL/each method and call it. 
 
-[This method of dynamic linking is actually supported by Emscripten](https://emscripten.org/docs/compiling/Dynamic-Linking.html)
-in principle, but it needs the linking to happen slightly differently. Specifically, it expects
-the linked library that needs to be dynamically loaded to also be in the build process (which is the opposite
-of the point of this), but be built with `emcc` and have the parameter `-sSIDE_MODULE`. What this means
-is that you would build SDL for Emscripten, marked as a "side module", and allow Emscripten to load it
-asynchronously as a separate WebAssembly module, then link it together. However because SDL's entire point
-is that it uses system library calls (graphics, etc), you would also have to ensure that you use 
-the correct includes (`EMCC_FORCE_STDLIBS`) when building SDL to include the relevant system libraries.
+There is however a simple solution that does work, even if it is more cumbersome: 
+provide the SDL C# binding as per the sample, and replace calls to `dlopen/dlsym`
+or similar with `NativeLibrary.Load/GetExport` C# native methods. What this will
+do is basically "dynamically" link to the SDL C# binding that exists, and the 
+existing code will work. 
+[This has been done in the `monogame-net8` branch for MonoGame.](https://github.com/RedMike/SdlWasmSample/compare/initial-net8...monogame-net8)
 
-The two choices then are load-time linking (which basically means passing the new SDL library to `emcc`
-when building your application, and isn't relevant here), and *runtime dynamic linking*. For runtime
-dynamic linking, it just expects you to access it via `dlopen()` and `dlsym()` which are, for example,
-what MonoGame does to load SDL functions at time of writing.
+Unfortunately, there is subsequent work that has to happen to also allow the
+libraries to correctly work, although it should be possible for the libraries
+to do the changes internally. Specifically, OpenGL ES must be used, some flags
+need to be avoided, and some legacy GL commands need to not be called.
+[This has been done on a MonoGame fork branch here.](https://github.com/MonoGame/MonoGame/compare/develop...RedMike:MonoGame:feature/dotnet-wasm)
 
-So I believe there is no **technical** reason why this would not work, but it requires the SDL library 
-to be built in a more complex way, and would automatically remove the ability to use the built-in
-Emscripten "ports" functionality to load SDL automatically (since it is not a "side module").
-It would also mean that failures happen at run-time always, which can make some issues hard to diagnose
-on top of potentially introducing issues in the future.
-
-(There are also minor limitations around the size of the compiled WASM file, thread support, etc; but
-those are tooling issues and overall solvable.)
-
-Or these libraries (MonoGame/etc) could choose to instead make WebAssembly a dedicated "platform"
-(e.g. for MonoGame, not like Android/iOS that still use dynamic linking, but instead its own non-DesktopGL
-platform that uses an SDL C# binding instead). This might make most sense because allowing WebAssembly
-basically also means setting a minimum .NET version for the project, at which point you can also
-lose a lot of cruft/slow-down that's only necessary to maintain compatibility with very old .NET.
-
-Or in the worst case, a wrapper library that is basically a fake `dlopen()` and `dlsym()` implementation
-could be written in C, whose only purpose is to *non-dynamically* override calls so that they go to
-the relevant symbol in the SDL library, but at that point there's multiple weird overrides in a chain.
-
+At time of writing, this sample in the `monogame-net8` branch works, although
+it is not complete and probably has issues with assets/audio/etc as well as
+other legacy/old GL methods.
 
 
 
