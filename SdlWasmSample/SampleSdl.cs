@@ -3,6 +3,7 @@ using SDL2;
 
 namespace SdlWasmSample;
 
+//not used for MonoGame
 public class SampleSdl : IDisposable
 {
     private const int MaxEventsInOneTick = 100;
