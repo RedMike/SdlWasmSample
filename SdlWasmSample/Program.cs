@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices.JavaScript;
+using Microsoft.Xna.Framework;
 using SdlWasmSample;
 
 public static partial class Program
@@ -23,37 +24,51 @@ public static partial class Program
 
     private static bool _firstRun = true;
     private static DateTime _lastLog = DateTime.UnixEpoch;
-    private static SampleSdl? _sample = null;
+    //private static SampleSdl? _sample = null;
+    private static Game? _sample = null;
 
     [JSExport]
     private static void MainLoop()
     {
-        if (_firstRun)
+        try
         {
-            Console.WriteLine("First run of the main loop");
-            _firstRun = false;
-
-            _sample = new SampleSdl($"Test Window {DateTime.UtcNow:s}", 600, 400);
-        }
-
-        var now = DateTime.UtcNow;
-        if ((now - _lastLog).TotalSeconds > 1.0)
-        {
-            _lastLog = now;
-            Console.WriteLine($"Main loop still running at: {now}");
-        }
-
-        if (_sample != null)
-        {
-            if (_sample.MainLoop())
+            if (_firstRun)
             {
-                //sample wants to quit
-                Console.WriteLine("Sample triggered quit");
-                _sample.Dispose();
-                _sample = null;
-                SampleSdl.QuitSdl();
-                //TODO: clear main loop?
+                Console.WriteLine("First run of the main loop");
+                _firstRun = false;
+            
+                //_sample = new SampleSdl($"Test Window {DateTime.UtcNow:s}", 600, 400);
+                _sample = new SampleGame();
             }
+
+            var now = DateTime.UtcNow;
+            if ((now - _lastLog).TotalSeconds > 1.0)
+            {
+                _lastLog = now;
+                Console.WriteLine($"Main loop still running at: {now}");
+            }
+
+            if (_sample != null)
+            {
+                _sample.RunOneFrame();
+            }
+            // if (_sample != null)
+            // {
+            //     if (_sample.MainLoop())
+            //     {
+            //         //sample wants to quit
+            //         Console.WriteLine("Sample triggered quit");
+            //         _sample.Dispose();
+            //         _sample = null;
+            //         SampleSdl.QuitSdl();
+            //         //TODO: clear main loop?
+            //     }
+            // }
+        }
+        catch (Exception e)
+        {
+            Console.Error.WriteLine(e);
+            throw;
         }
     }
     
