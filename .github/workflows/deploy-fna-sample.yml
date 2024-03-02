@@ -28,7 +28,7 @@ jobs:
           dotnet workload install wasm-tools
           dotnet workload install wasm-experimental
       - name: Publish project
-        run: dotnet publish
+        run: dotnet publish SdlWasmSample -c Release
       - name: Test path
         run: |
           cd /home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish
