@@ -18,19 +18,10 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
-      - name: Restore dotnet tools
-        run: dotnet tool restore
       - name: Install dotnet workloads
         run: |
           dotnet workload install wasm-tools
           dotnet workload install wasm-experimental
-      - uses: mymindstorm/setup-emsdk@v14
-      - name: Verify
-        run: emcc -v
-      - name: Check working directory
-        shell: bash
-        run: |
-          pwd
       - name: Publish project
         run: dotnet publish
       - name: Save published files
