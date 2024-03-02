@@ -26,7 +26,7 @@ jobs:
         run: dotnet publish
       - name: Test path
         run: |
-          cd home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish
+          cd /home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish
           cd wwwroot
           ls
       - name: Save published files
