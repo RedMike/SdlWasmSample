@@ -40,8 +40,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           name: github-pages
-          path: |
-            /home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish/wwwroot
+          path: /home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish/wwwroot
   deploy:
     strategy:
       matrix:
