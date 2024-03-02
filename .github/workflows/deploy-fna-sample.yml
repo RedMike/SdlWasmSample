@@ -38,9 +38,7 @@ jobs:
           if-no-files-found: error
       - name: Package published files for GH Pages
         run: |
-          tar
-            -czvf /home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish/publish.tar.gz
-            /home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish/wwwroot/*
+          tar -czvf /home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish/publish.tar.gz /home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish/wwwroot/*
       - name: Save published files for GH Pages
         uses: actions/upload-pages-artifact@v3
         with:
