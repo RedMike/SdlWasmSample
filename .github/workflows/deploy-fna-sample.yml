@@ -1,6 +1,9 @@
 ﻿name: Deploy FNA Sample
 
 on:
+  push:
+    branches:
+      - fna-net8
   workflow_dispatch:
 
 jobs:
@@ -14,6 +17,8 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v4
+        with:
+          submodules: true
       - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
         uses: actions/setup-dotnet@v3
         with:
