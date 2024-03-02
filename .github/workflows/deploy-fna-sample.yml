@@ -1,0 +1,41 @@
+﻿name: Deploy FNA Sample
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        variant: [Release]
+    runs-on: ${{ matrix.os }}
+    name: Build FNA Sample
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore dotnet tools
+        run: dotnet tool restore
+      - name: Install dotnet workloads
+        run: |
+          dotnet workload install wasm-tools
+          dotnet workload install wasm-experimental
+      - uses: mymindstorm/setup-emsdk@v14
+      - name: Verify
+        run: emcc -v
+      - name: Check working directory
+        shell: bash
+        run: |
+          pwd
+      - name: Publish project
+        run: dotnet publish
+      - name: Save published files
+        uses: actions/upload-artifact@master
+        with:
+          name: Published files
+          path: |
+            SdlWasmSample\bin\Release\net8.0\publish\wwwroot\*
