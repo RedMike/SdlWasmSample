@@ -38,7 +38,7 @@ jobs:
           if-no-files-found: error
       - name: Package published files for GH Pages
         run: |
-          cd home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish
+          cd /home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish
           tar -czvf publish.tar.gz wwwroot/*
       - name: Save published files for GH Pages
         uses: actions/upload-pages-artifact@v3
