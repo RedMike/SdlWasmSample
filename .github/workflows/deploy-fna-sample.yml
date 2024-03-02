@@ -36,11 +36,16 @@ jobs:
           path: |
             /home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish/wwwroot/*
           if-no-files-found: error
+      - name: Fix permissions
+        run: |
+          chmod -c -R +rX "/home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish/wwwroot/" | while read line; do
+            echo "::warning title=Invalid file permissions automatically fixed::$line"
+          done
       - name: Save published files for GH Pages
         uses: actions/upload-pages-artifact@v3
         with:
           name: github-pages
-          path: /home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish/wwwroot
+          path: /home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish/wwwroot/*
   deploy:
     strategy:
       matrix:
