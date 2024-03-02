@@ -4,11 +4,6 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-    <ItemGroup>
-      <Reference Include="FNA">
-        <HintPath>..\lib\FNA\FNA.dll</HintPath>
-      </Reference>
-    </ItemGroup>
 
     <PropertyGroup>
         <EmccLinkOptimizationFlag>-O0</EmccLinkOptimizationFlag>
@@ -35,5 +30,8 @@
         <EmccExportedRuntimeMethod Include="setMainLoop">
             <Visible>false</Visible>
         </EmccExportedRuntimeMethod>
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\FNA\FNA.Core.csproj" />
     </ItemGroup>
 </Project>
