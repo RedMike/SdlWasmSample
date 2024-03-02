@@ -29,4 +29,4 @@ jobs:
         with:
           name: Published files
           path: |
-            SdlWasmSample\bin\Release\net8.0\publish\wwwroot\*
+            SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish/wwwroot/*
