@@ -24,7 +24,6 @@ public static partial class Program
 
     private static bool _firstRun = true;
     private static DateTime _lastLog = DateTime.UnixEpoch;
-    //private static SampleSdl? _sample = null;
     private static Game? _sample = null;
 
     [JSExport]
@@ -37,7 +36,6 @@ public static partial class Program
                 Console.WriteLine("First run of the main loop");
                 _firstRun = false;
             
-                //_sample = new SampleSdl($"Test Window {DateTime.UtcNow:s}", 600, 400);
                 _sample = new SampleGame();
             }
 
@@ -52,18 +50,6 @@ public static partial class Program
             {
                 _sample.RunOneFrame();
             }
-            // if (_sample != null)
-            // {
-            //     if (_sample.MainLoop())
-            //     {
-            //         //sample wants to quit
-            //         Console.WriteLine("Sample triggered quit");
-            //         _sample.Dispose();
-            //         _sample = null;
-            //         SampleSdl.QuitSdl();
-            //         //TODO: clear main loop?
-            //     }
-            // }
         }
         catch (Exception e)
         {
