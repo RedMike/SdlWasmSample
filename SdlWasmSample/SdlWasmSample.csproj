@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <PropertyGroup>
+        <EmccLinkOptimizationFlag>-O0</EmccLinkOptimizationFlag>
         <EmccExtraLDFlags>--js-library $(MSBuildProjectDirectory.Replace('\', '/'))/../js/library-fixsdl.js -sFULL_ES3</EmccExtraLDFlags>
         <WasmEmitSymbolMap>true</WasmEmitSymbolMap>
         <WasmAllowUndefinedSymbols>true</WasmAllowUndefinedSymbols>
