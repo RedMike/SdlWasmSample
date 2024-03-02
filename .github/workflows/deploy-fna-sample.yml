@@ -29,9 +29,42 @@ jobs:
           cd /home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish
           cd wwwroot
           ls
-      - name: Save published files
-        uses: actions/upload-artifact@master
+      - name: Save published files for download
+        uses: actions/upload-artifact@v4
         with:
-          name: Published files
+          name: Published Files
           path: |
             /home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish/wwwroot/*
+          if-no-files-found: error
+      - name: Package published files for GH Pages
+        run: |
+          tar
+            -czvf /home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish/publish.tar.gz
+            /home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish/wwwroot/*
+      - name: Save published files for GH Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages
+          path: |
+            /home/runner/work/SdlWasmSample/SdlWasmSample/SdlWasmSample/bin/Release/net8.0/publish/publish.tar.gz          
+  deploy:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        variant: [Release]
+    runs-on: ${{ matrix.os }}
+    needs: build
+    #required for Github Pages deploy
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    name: Deploy FNA Sample
+    steps:
+      - name: Deploy to Github Pages
+        uses: actions/deploy-pages@v4
+          
+      
+      
